@@ -1,15 +1,18 @@
 //binary exponentiation is used to calculate the power a number in O(log n)
 //There are 2 approaches.using while loop and recursion
 
+//reverse of number.
+
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+const ll mod=1e9+7;
 ll binary_exponentation1(ll a,ll b){
 	//using while loop
 	ll res=1;
 	while(b>0){
-		if(b&1)res*=a;
-		a=a*a;
+		if(b&1)res=(res%mod*a%mod)%mod;
+		a=(a%mod*a%mod)%mod;
 		b=b>>1;
 	}
 	return res;
@@ -17,13 +20,17 @@ ll binary_exponentation1(ll a,ll b){
 ll binary_exponentation2(ll a,ll b){
 	//recursion
 	if(b==0)return 1;
-	ll res=binary_exponentation2(a,b>>1);
-	if(b&1)return res*res*a;
-	else return res*res;
+	ll res=binary_exponentation2(a,b/2);
+	if(b&1)return (res%mod*res%mod*a%mod)%mod;
+	else return (res%mod*res%mod)%mod;
+}
+ll inverse(ll a){
+	return binary_exponentation1(a,mod-2);
 }
 int main(){
 	ll a,b;
 	cin>>a>>b;
 	cout<<binary_exponentation1(a,b)<<endl;
 	cout<<binary_exponentation2(a,b)<<endl;
+	cout<<inverse(10000);
 }
